@@ -87,7 +87,3 @@ It does not by itself prove:
 > Those L18 heads operate through L22 N13149.
 
 The L18→L22 mediation experiment provides that link.
-
-## Placement
-
-Main text as upstream-head discovery.
