@@ -222,12 +222,4 @@ Random controls are small, with maximum random mean flip rate around 2.1%.
 
 These results strongly support the pre-existing machinery claim:
 
-> Base and CI top writer-neuron sets substantially overlap, and CI-derived writer-neuron deltas can rescue base failures.
-
-## Suggested main-text mention
-
-> Additional neuron-level controls supported this interpretation: base and CI top writer-neuron sets strongly overlapped, with 92/100 overlap for the L22 top-100 neurons, and adding CI-derived writer-neuron D−A deltas could rescue held-out base D failures into No responses.
-
-## Placement
-
-Appendix, with one short mention in the main text if space allows.
+> Base and CI top writer-neuron sets substantially overlap, and CI-derived writer-neuron deltas can rescue base failures..
