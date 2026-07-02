@@ -79,7 +79,3 @@ Rescue generation across all four levels:
 This is central evidence for the pre-existing-machinery claim.
 
 The base model already contains a compatible downstream L22 privacy/refusal writer pathway. Removing the L22 refusal contribution breaks base refusals, while adding a CI-like contribution rescues base Yes failures.
-
-## Placement
-
-Main text.
