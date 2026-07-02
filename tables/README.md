@@ -11,5 +11,3 @@ tables/
   main/      # tables supporting the main story
   appendix/  # compact appendix/support tables
 ```
-
-Use these files when writing the technical note, application summary, or README. Use `results/` when checking the full run outputs.
