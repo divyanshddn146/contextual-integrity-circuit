@@ -57,8 +57,4 @@ contextual-integrity-circuit/
 
 ## Main-vs-appendix rule
 
-The main story should be built from the six files in `docs/main_results/`. Appendix results support the interpretation but should not be introduced as separate central claims.
-
-## Removed from public package
-
-Scratch notes, nested duplicate repos, legacy source-capped dumps, and duplicate-preserved folders were not included in this GitHub-ready version.
+The main story is built from the six files in `docs/main_results/`. Appendix results support the interpretation but are not be introduced as separate central claims.
