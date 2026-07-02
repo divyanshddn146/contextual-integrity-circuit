@@ -130,11 +130,3 @@ Interpretation: base D activations are weaker/more Yes-like than CI D activation
 Cross-model patching supports the shared-geometry/routing claim:
 
 > Base and CI share compatible activation geometry. Base activations can drive CI decisions, and CI final refusal activations can drive base refusals. However, the base model does not naturally route disallowed prompts into the strong CI-like refusal state as reliably.
-
-## Main-text usage
-
-Mention only the focused DD same-final headline result in the main text:
-
-> Cross-model D-final patching showed that CI final-token refusal activations can rescue base D failures in 189/190 cases, while base D activations patched into CI D prompts destroy CI refusals in 188/190 cases.
-
-Full details belong in appendix.
