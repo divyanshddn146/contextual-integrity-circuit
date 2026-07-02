@@ -66,12 +66,8 @@ Summary:
 | trajectory | 5/5 No | 5/5 Yes |
 | trajectory_enhancing | 5/5 No | 5/5 Yes |
 
-Generation quality varies by level. Trajectory is cleanest; seed is more mixed/conditional. Use generation as qualitative support, not the main causal metric.
+Generation quality varies by level. Trajectory is cleanest; seed is more mixed/conditional. Generation is used as qualitative support, not as the main causal metric.
 
 ## Caveat
 
 L18 is upstream. It should not be expected to flip every case. The direct L22 intervention is the stronger downstream decision-control result.
-
-## Placement
-
-Main text.
