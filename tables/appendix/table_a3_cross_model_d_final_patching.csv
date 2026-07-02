@@ -1,0 +1,3 @@
+patch_direction,site,best_layer,cases,main_effect,patched_decision_rate,interpretation
+base D final activation -> CI D prompt,final token,26,190,destroys CI refusals in 188/190 cases,patched Yes rate 100%,CI decision can be disrupted by base D final activation
+CI D final activation -> base D prompt,final token,27,190,rescues base D failures in 189/190 cases,patched No rate 100%,CI D activations can drive base model toward refusal

@@ -1,0 +1,179 @@
+\documentclass[10pt]{article}
+
+\usepackage[a4paper,margin=0.68in]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\definecolor{linkblue}{HTML}{0645AD}
+\definecolor{boxgray}{HTML}{F4F6F8}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.55em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.45em}{}
+\titlespacing*{\section}{0pt}{0.7em}{0.35em}
+\titlespacing*{\subsection}{0pt}{0.5em}{0.25em}
+\setlist[itemize]{leftmargin=1.25em,itemsep=0.12em,topsep=0.15em}
+\setlist[enumerate]{leftmargin=1.25em,itemsep=0.12em,topsep=0.15em}
+\renewcommand{\arraystretch}{1.08}
+
+\newcommand{\tightcaption}[1]{\vspace{0.25em}\noindent{\footnotesize\textit{#1}}\vspace{0.15em}}
+\newcommand{\resultbox}[1]{%
+\vspace{0.25em}
+\noindent\fcolorbox{black!18}{boxgray}{\parbox{0.965\linewidth}{#1}}
+\vspace{0.25em}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \textbf{Mechanistic Evidence for Contextual-Integrity Privacy Decisions in a CI-Tuned LLM}}\\[0.35em]
+{\large \textbf{A short technical note}}\\[0.35em]
+Divyansh Agarwal \quad | \quad July 2026\\[-0.15em]
+\end{center}
+
+\resultbox{\textbf{Main hypothesis.} Contextual-integrity (CI) tuning does not appear to create an entirely new privacy mechanism from scratch. The base model already contains compatible privacy-decision machinery, and CI tuning makes privacy-sensitive prompts activate this machinery more reliably. Mechanistically, the current evidence points to an \textbf{L18 attention $\rightarrow$ L22 MLP} pathway for privacy Yes/No decisions.}
+
+\section{Motivation}
+
+Recent work on contextual integrity in LLMs asks whether an assistant should disclose information given the sender, recipient, information type, purpose, and context. The CI-RL paper shows that explicit CI reasoning and reinforcement learning can improve privacy-related behavior, including transfer to PrivacyLens-style evaluations \cite{lan2025ci}. My goal is complementary: \textbf{instead of only asking whether CI tuning improves behavior, I ask what internal mechanism changes after CI tuning.}
+
+The motivating question is:
+\begin{quote}
+\textit{When a CI-tuned model refuses inappropriate information sharing, is this because tuning created a new privacy circuit, or because tuning made the model use machinery that was already partly present in the base model?}
+\end{quote}
+
+This matters for white-box control of contextual agents. If a model already contains safety-relevant machinery but fails to activate it in the right context, then safety failures may sometimes be routing/use failures rather than absence-of-knowledge failures.
+
+\section{Experimental setup}
+
+I compare \textbf{Qwen2.5-7B-Instruct} with a released \textbf{Qwen2.5-7B-Instruct-CI} variant used in the CI-RL/PrivacyLens line of work. Prompts follow a PrivacyLens-style contextual-integrity structure: the model sees a sharing scenario and must answer whether sharing is acceptable.
+
+\begin{center}
+\small
+\begin{tabularx}{0.98\linewidth}{@{}lX@{}}
+\toprule
+\textbf{Item} & \textbf{Description} \\
+\midrule
+Models & Base Qwen2.5-7B-Instruct and CI-tuned Qwen2.5-7B-Instruct-CI. \\
+Task & Privacy/contextual-integrity sharing decision; answer Yes/No, often with a short reason. \\
+Conditions & A = allowed sharing; B = recipient violation; C = purpose violation; D = both recipient and purpose violations. \\
+Prompt levels & seed, vignette, trajectory, trajectory-enhancing; each level contains 493 prompts in the all-level sweep. \\
+Main methods & Direction ablation, activation patching, MLP writer-neuron analysis, attention-head analysis, L18$\rightarrow$L22 mediation, and base-model remove/rescue. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The project developed in stages. I first verified that broad final-token directions and component-level ablations could causally affect PrivacyLens decisions. Then I localized the effect to specific components: late MLP writer neurons and L18 attention heads. Finally, I tested whether the same machinery exists in the base model through remove/rescue experiments.
+
+\section{Main finding 1: L22 MLP writer neurons control CI refusals}
+
+In the CI-tuned model, an MLP writer-neuron scan identifies a localized late-MLP pathway. The strongest single neuron is \textbf{L22 neuron 13149}. It behaves like an allowed/Yes-supporting writer that is suppressed on disallowed prompts, so removing its refusal-aligned contribution can flip refusals into Yes responses.
+
+I then evaluated L22 writer-neuron direction ablation across all four PrivacyLens prompt levels. The intervention removes the refusal-direction contribution from selected L22 writer neurons on normal-No cases. Random-neuron controls use matched random L22 neurons.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Prompt level} & \textbf{Normal-No cases} & \textbf{$\alpha=4$ flips} & \textbf{$\alpha=6$ flips} & \textbf{Random flips} \\
+\midrule
+seed & 481 & 150/481 & 481/481 & 0 \\
+vignette & 485 & 164/485 & 485/485 & 0 \\
+trajectory & 478 & 385/478 & 478/478 & 0 \\
+trajectory-enhancing & 493 & 137/493 & 493/493 & 0 \\
+\midrule
+\textbf{Total} & \textbf{1937} & \textbf{836/1937} & \textbf{1937/1937} & \textbf{0} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\tightcaption{Table 1. L22 top-100 writer-neuron direction ablation in the CI model. At $\alpha=6$, the intervention flips every normal-No case to Yes across all four prompt levels, while random-neuron controls produce no flips.}
+
+\textbf{Interpretation.} L22 writer neurons are not just correlated with privacy refusals. Removing their refusal-aligned contribution is sufficient to flip the final decision across the full all-level evaluation. This suggests that L22 contains a downstream decision-writing mechanism for the CI model's privacy refusals.
+
+\section{Main finding 2: L18 attention heads route into L22}
+
+After localizing the downstream writer pathway, I looked for upstream attention components that feed into it. A head-level scan identifies a small set of L18 attention heads, especially \textbf{H15, H18, H4, H13, and H20}. Patching these heads toward the allowed-state mean shifts both the final Yes/No margin and the activation of downstream \textbf{L22 neuron 13149}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Prompt level} & \textbf{Normal-No} & \textbf{L18 top5 flips} & \textbf{Random flips} & \textbf{L22 shift to A} & \textbf{Corr.} \\
+\midrule
+seed & 481 & 56/481 & 1/481 & +20.77 & 0.816 \\
+vignette & 485 & 61/485 & 0/485 & +16.73 & 0.911 \\
+trajectory & 478 & 150/478 & 1/478 & +18.28 & 0.897 \\
+trajectory-enhancing & 493 & 14/493 & 0/493 & +12.56 & 0.936 \\
+\midrule
+\textbf{Total} & \textbf{1937} & \textbf{281/1937} & \textbf{2/1937} & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{center}
+\tightcaption{Table 2. L18$\rightarrow$L22 mediation in the CI model. Patching the top L18 heads toward the allowed state produces decision shifts and consistently moves L22 neuron 13149 toward its allowed activation state.}
+
+\textbf{Interpretation.} L18 attention-head patching is weaker than direct L22 ablation, as expected for an upstream intervention. But it systematically moves the downstream L22 neuron in the predicted direction, and the L22 activation shift strongly tracks the decision-margin shift. This supports an upstream-routing picture: \textbf{L18 attention heads route contextual privacy information into the L22 writer-neuron decision pathway.}
+
+\section{Main finding 3: the base model already contains compatible machinery}
+
+To test whether CI tuning creates a new mechanism or makes existing machinery more reliable, I repeated remove/rescue experiments in the base model. The key result is that both downstream L22 and upstream L18 interventions work in the base model too.
+
+\begin{center}
+\small
+\begin{tabularx}{0.98\linewidth}{@{}lXr@{}}
+\toprule
+\textbf{Base-model test} & \textbf{Intervention} & \textbf{Result} \\
+\midrule
+L22 remove & On base normal-No cases, remove the L22 refusal contribution. & 1910/1910 No$\rightarrow$Yes at $\alpha=6$ \\
+L22 rescue & On base normal-Yes failures, add a CI-like L22 writer contribution. & 56/62 Yes$\rightarrow$No at $\alpha=2$ \\
+L18 remove & Patch base L18 top heads toward the allowed state. & 453/1910 No$\rightarrow$Yes \\
+L18 rescue & Patch base L18 top heads toward the refusal state. & 31/62 Yes$\rightarrow$No \\
+Random controls & Matched random neurons/heads. & near-zero flips \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\tightcaption{Table 3. Base-model remove/rescue. The same broad L18/L22 pathway is not exclusive to the CI-tuned model; the base model already contains compatible machinery that can be removed or rescued.}
+
+\textbf{Interpretation.} The base model already has a compatible privacy-decision pathway. CI tuning appears to make privacy-sensitive prompts activate this pathway more consistently, rather than inventing the whole mechanism from scratch.
+
+\section{Supporting controls and appendix evidence}
+
+The short story above is supported by several appendix-level analyses, which I would keep in the repository rather than in the first two-page summary:
+
+\begin{itemize}
+\item \textbf{Component-level direction ablation:} coarse ablations localize strong causal signal to L18 attention and late MLP layers. For example, L18 attention direction removal flips 93/95 held-out D prompts, and L22 MLP direction removal flips 91/95, while random directions produce far fewer flips.
+\item \textbf{Activation similarity:} base and CI hidden states remain highly aligned across layers and prompt types, supporting the idea that CI tuning changes use/routing of existing representations rather than fully rewriting geometry.
+\item \textbf{Within-model and cross-model patching:} broad patching experiments show that final-token and span-level activations can transfer privacy-decision signal between base and CI models.
+\item \textbf{Writer-neuron overlap:} base and CI writer-neuron sets substantially overlap; for example, 92/100 of the L22 top-100 writer neurons are shared.
+\item \textbf{MLP sufficiency/rescue:} adding CI-like neuron deltas can rescue base-model failures, supporting the claim that the downstream writer pathway is compatible across models.
+\end{itemize}
+
+\section{Next steps}
+
+The current results are a pilot, not a final mechanistic proof. The most useful next steps are:
+
+\begin{enumerate}
+\item \textbf{Generalize beyond PrivacyLens-style prompts:} test whether the L18$\rightarrow$L22 pathway appears in other contextual privacy and agentic disclosure settings.
+\item \textbf{Separate decision control from rationale control:} current interventions strongly control the Yes/No decision, but reasoning text can remain partially refusal-like after strong edits.
+\item \textbf{Test robustness across models and tuning methods:} compare CI-RL with prompting, supervised tuning, and other privacy/safety post-training methods.
+\item \textbf{Develop white-box monitoring:} detect when privacy-sensitive contexts fail to activate the L18$\rightarrow$L22 pathway, and use this as a mechanistic warning signal for contextual agents.
+\end{enumerate}
+
+\section{Summary}
+
+\resultbox{\textbf{One-sentence summary.} My current evidence suggests that the CI-tuned model does not learn privacy behavior by creating a completely new circuit; rather, the base model already contains a compatible L18 attention $\rightarrow$ L22 MLP privacy-decision pathway, and CI tuning makes privacy-sensitive prompts activate this pathway more reliably.}
+
+\begin{thebibliography}{9}
+\bibitem{lan2025ci}
+Guangchen Lan, Huseyin A. Inan, Sahar Abdelnabi, Janardhan Kulkarni, Lukas Wutschitz, Reza Shokri, Christopher G. Brinton, and Robert Sim. \textit{Contextual Integrity in LLMs via Reasoning and Reinforcement Learning}. NeurIPS 2025. arXiv:2506.04245. \url{https://arxiv.org/abs/2506.04245}
+\bibitem{compass}
+Sahar Abdelnabi. \textit{COMPASS Research Group}. \url{https://s-abdelnabi.github.io/}
+\end{thebibliography}
+
+\end{document}

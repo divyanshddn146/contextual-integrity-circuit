@@ -1,0 +1,10 @@
+component,layer,alpha,heldout_cases,no_to_yes_flips,mean_margin_shift,random_control_reference,interpretation
+attention,18,1.0,95,93/95,+2.335,attention random max 3/95,strongest attention site
+attention,20,1.0,95,36/95,+0.397,attention random max 3/95,weaker later attention signal
+attention,21,1.0,95,29/95,+0.338,attention random max 3/95,weaker later attention signal
+MLP,20,1.0,95,94/95,+2.586,MLP random max 8/95,late MLP causal signal
+MLP,21,1.0,95,94/95,+2.813,MLP random max 8/95,late MLP causal signal
+MLP,22,1.0,95,91/95,+1.954,MLP random max 8/95,matches L22 writer-neuron story
+MLP,27,1.0,95,94/95,+3.465,MLP random max 8/95,late downstream accumulation
+resid_post,18,1.0,95,95/95,+3.208,residual random max 2/95,broad final direction already causal by L18
+resid_post,22,1.0,95,95/95,+5.363,residual random max 2/95,broad final direction remains causal

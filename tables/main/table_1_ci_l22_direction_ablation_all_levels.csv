@@ -1,0 +1,6 @@
+level,normal_no_cases,top100_alpha1_no_to_yes,top100_alpha2_no_to_yes,top100_alpha4_no_to_yes,top100_alpha6_no_to_yes,random_control_no_to_yes
+seed,481,3/481,5/481,150/481,481/481,0/481
+vignette,485,0/485,2/485,164/485,485/485,0/485
+trajectory,478,3/478,9/478,385/478,478/478,0/478
+trajectory_enhancing,493,0/493,1/493,137/493,493/493,0/493
+overall,1937,6/1937,17/1937,836/1937,1937/1937,0/1937

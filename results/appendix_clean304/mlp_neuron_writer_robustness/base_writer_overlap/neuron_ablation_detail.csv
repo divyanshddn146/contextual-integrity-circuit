@@ -1,0 +1,8 @@
+layer,k,scenario_id,control_type,ablation_mode,normal_margin,intervened_margin,delta_toward_yes,normal_decision,intervened_decision,no_to_yes_flip
+27,1,100034,top_writer_neurons,mean,0.5625,0.53125,-0.03125,Yes,Yes,False
+21,1,100034,top_writer_neurons,mean,0.5625,0.71875,0.15625,Yes,Yes,False
+20,1,100034,top_writer_neurons,mean,0.5625,0.46875,-0.09375,Yes,Yes,False
+22,1,100034,top_writer_neurons,mean,0.5625,2.375,1.8125,Yes,Yes,False
+23,1,100034,top_writer_neurons,mean,0.5625,0.84375,0.28125,Yes,Yes,False
+25,1,100034,top_writer_neurons,mean,0.5625,1.34375,0.78125,Yes,Yes,False
+26,1,100034,top_writer_neurons,mean,0.5625,0.53125,-0.03125,Yes,Yes,False

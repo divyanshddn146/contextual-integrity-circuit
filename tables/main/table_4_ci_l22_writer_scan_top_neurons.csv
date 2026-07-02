@@ -1,0 +1,7 @@
+rank,layer,neuron,writer_score,a_activation_mean,d_activation_mean,d_minus_a_activation_gap,downproj_dot_refusal_direction,note
+1,22,13149,8.355,14.62,-3.34,-17.96,-0.465,strongest identified writer; Yes/allowed-writing neuron suppressed on D/refusal prompts
+2,23,7028,4.440,,,,,
+3,23,4894,3.378,,,,,
+4,23,10710,3.141,,,,,
+5,23,4059,2.613,,,,,
+6,26,10844,2.323,,,,,

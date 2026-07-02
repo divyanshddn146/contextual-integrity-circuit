@@ -1,0 +1,2 @@
+target_layer,target_neuron,n_pairs,A_mean_act,D_mean_act,D_minus_A_mean_act,A_std_act,D_std_act
+22,13149,304,13.3258056640625,-6.339142648797286,-19.664948312859785,3.9346248740727177,6.462453783141256

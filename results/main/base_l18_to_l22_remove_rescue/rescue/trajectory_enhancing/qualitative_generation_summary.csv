@@ -1,0 +1,3 @@
+condition,generated_decision,n
+normal,Yes,2
+patched_L18_top5_per_layer_alpha1.0,No,2

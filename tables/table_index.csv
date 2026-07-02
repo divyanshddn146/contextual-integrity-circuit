@@ -1,0 +1,10 @@
+table_file,section,purpose
+main/table_1_ci_l22_direction_ablation_all_levels.csv,main,All-level L22 writer-neuron direction ablation result.
+main/table_2_ci_l18_to_l22_mediation_all_levels.csv,main,All-level L18 attention-head to L22 neuron mediation result.
+main/table_3_base_l22_l18_remove_rescue.csv,main,Base-model remove/rescue evidence for pre-existing compatible machinery.
+main/table_4_ci_l22_writer_scan_top_neurons.csv,main,Top writer neurons from the CI MLP writer scan.
+main/table_5_ci_l18_attention_head_scan_top_heads.csv,main,Top L18 attention heads from the discovery scan.
+appendix/table_a1_component_direction_ablation.csv,appendix,Component-level localization support.
+appendix/table_a2_activation_similarity_final_token.csv,appendix,Base/CI hidden-state similarity support.
+appendix/table_a3_cross_model_d_final_patching.csv,appendix,Cross-model D-final patching support.
+appendix/table_a4_mlp_sufficiency_and_overlap.csv,appendix,MLP add-delta sufficiency and base/CI neuron overlap support.

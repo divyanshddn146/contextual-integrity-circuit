@@ -1,0 +1,3 @@
+experiment,pair,layer,n,mean_original_margin,mean_patched_margin,mean_effect,mean_destructive_effect,mean_rescue_effect,flip_rate,destroyed_no_rate,rescued_yes_rate,patched_yes_rate,patched_no_rate
+baseD_final_to_ciD_final_destructive,base_to_ci_same_D,26,190,-0.7217105263157895,0.7444078947368421,1.4661184210526317,1.4661184210526317,,0.9894736842105263,0.9894736842105263,0.0,1.0,0.0
+ciD_final_to_baseD_final_rescue,ci_to_base_same_D,27,190,0.7080592105263158,-2.138486842105263,-2.846546052631579,,2.846546052631579,0.9947368421052631,0.0,0.9947368421052631,0.0,1.0

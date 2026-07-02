@@ -1,0 +1,11 @@
+rank,layer,head,writer_score,trajectory_patch_result_note
+1,18,15,0.9017,top1 margin shift +1.65; 4/478 No-to-Yes
+2,18,18,0.8557,included in top3/top5
+3,18,4,0.7217,top3 margin shift +9.91; 46/478 No-to-Yes
+4,18,13,0.5125,included in top5
+5,18,20,0.4734,top5 margin shift +16.67; 150/478 No-to-Yes
+6,18,16,0.3363,included in top10 discovery but top5 used in main mediation
+7,18,5,0.2064,
+8,18,2,0.1801,
+9,18,21,0.1627,
+10,18,27,0.0706,top10 gave 113/478 flips; top5 was cleaner

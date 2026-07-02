@@ -1,0 +1,8 @@
+layer,k,control_type,n,normal_margin_mean,intervened_margin_mean,delta_toward_yes_mean,no_to_yes_flips,no_to_yes_flip_rate
+20,1,top_writer_neurons,1,0.5625,0.46875,-0.09375,0,0.0
+21,1,top_writer_neurons,1,0.5625,0.71875,0.15625,0,0.0
+22,1,top_writer_neurons,1,0.5625,2.375,1.8125,0,0.0
+23,1,top_writer_neurons,1,0.5625,0.84375,0.28125,0,0.0
+25,1,top_writer_neurons,1,0.5625,1.34375,0.78125,0,0.0
+26,1,top_writer_neurons,1,0.5625,0.53125,-0.03125,0,0.0
+27,1,top_writer_neurons,1,0.5625,0.53125,-0.03125,0,0.0

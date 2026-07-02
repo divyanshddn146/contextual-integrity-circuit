@@ -1,0 +1,6 @@
+analysis,intervention_or_metric,cases,result,interpretation
+MLP add-delta sufficiency,L20 top100 alpha3 on A prompts,95,95/95 Yes-to-No,adding refusal-like neuron activation can be sufficient at L20
+MLP add-delta sufficiency,L22 top100 alpha3 on A prompts,95,79/95 Yes-to-No,supports L22 pathway but less complete than direct removal
+Base/CI writer overlap,L22 top100 neuron-set overlap,100,92/100 shared,base and CI writer-neuron sets substantially overlap
+Base/CI writer overlap,global multilayer top100 overlap,100,90/100 shared,shared downstream machinery across models
+Base rescue with CI-top neurons,CI global top50 alpha0.5 add-delta on base D failures,95,95/95 rescued to No,CI-discovered neurons can control base failures

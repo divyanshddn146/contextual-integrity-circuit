@@ -1,0 +1,40 @@
+path,rows,n_cols,decision,reason
+data/final/curated_candidate_pool_source_capped_CLEAN304.csv,304,11,KEEP,Essential main + clean304 appendix input
+data/final/curated_candidate_pool_source_capped_for_patching.csv,391,16,KEEP,Essential broader 391-pool appendix input
+data/final/curated_improvement_eligibility_source_capped.csv,391,52,KEEP,Essential broader 391-pool appendix eligibility metadata
+data/final/source_capped_CLEAN304_improvement_eligibility.csv,304,49,KEEP,Essential clean304 eligibility/behavior metadata
+data/final/source_capped_CLEAN304_behavior_clean.csv,304,33,OPTIONAL,Provenance only; not read by final scripts
+data/final/source_capped_CLEAN304_behavior_results.csv,2432,11,OPTIONAL,Provenance only; not read by final scripts
+data/final/source_capped_CLEAN304_improvement_cases.csv,304,31,OPTIONAL,Provenance only; not read by final scripts
+data/final/source_capped_CLEAN304_validation_summary.csv,304,21,OPTIONAL,Subset of eligibility; redundant for scripts
+data/behavior_clean.csv,28,33,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_clean_candidate_7344.csv,7344,33,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_clean_hard_600.csv,600,33,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_clean_large_180.csv,180,33,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_results.csv,224,11,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_results_candidate_7344.csv,58752,11,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_results_hard_600.csv,4800,11,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/behavior_results_large_180.csv,1440,11,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/ci_improvement_cases_candidate_7344.csv,7344,31,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/ci_improvement_cases_hard_600.csv,600,31,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/ci_improvement_cases_large_180.csv,180,31,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/ci_improvement_eligibility_candidate_7344.csv,7344,49,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/ci_improvement_eligibility_hard_600.csv,600,49,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/ci_improvement_eligibility_large_180.csv,180,49,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/curated_improvement_eligibility_source_capped.csv,391,52,DROP,Duplicate of data/final/curated_improvement_eligibility_source_capped.csv
+data/final/source_capped_validation_summary.csv,391,21,DROP,Redundant 391 validation-only file; eligibility file is better
+data/patching_eligibility.csv,28,59,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/processed/candidate_pool_7344.csv,7344,16,DROP,Older development/pilot/intermediate file; not needed for final GitHub repo
+data/processed/curated_candidate_pool_source_capped_for_patching.csv,391,16,DROP,Duplicate of data/final/curated_candidate_pool_source_capped_for_patching.csv
+data/processed/fixed_paired_scenarios_6000.csv,5979,17,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/processed/hard_seed_pool_600_for_behavior.csv,600,16,DROP,Older development/pilot/intermediate file; not needed for final GitHub repo
+data/processed/large_seed_pool_180_for_behavior.csv,204,19,DROP,Older development/pilot/intermediate file; not needed for final GitHub repo
+data/processed/manual_seed_selection.csv,28,14,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/processed/privacylens_seeds.csv,565,10,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/processed/validation_summary_candidate_7344.csv,7344,21,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/processed/validation_summary_hard_5990.csv,5979,21,DROP,Older development/pilot/intermediate file; not needed for final GitHub repo
+data/processed/validation_summary_hard_5991.csv,7344,21,DROP,Older development/pilot/intermediate file; not needed for final GitHub repo
+data/processed/validation_summary_hard_600.csv,600,21,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/processed/validation_summary_large_180.csv,180,21,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/prompt_format_pilot_results.csv,120,12,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story
+data/validation_summary.csv,28,21,DROP,Development/pilot dataset or early behavior result; not part of final main/appendix story

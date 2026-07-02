@@ -1,0 +1,9 @@
+model,model_short,patch_family,experiment,peak_layer_by_abs_aligned,peak_mean_patch_effect_at_that_layer,peak_mean_aligned_effect,peak_flip_rate_at_that_layer,n_at_peak,peak_layer_by_mean_abs_effect,peak_mean_abs_effect
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,final_AB,final_AB_A_to_B,26,8.441645408163266,8.441645408163266,0.0,49,26,8.441645408163266
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,final_AB,final_AB_B_to_A,27,-10.34406887755102,10.34406887755102,0.9795918367346939,49,27,10.34406887755102
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,recipient_last_AB,recipient_last_AB_A_to_B,6,6.332908163265306,6.332908163265306,0.0,49,6,6.332908163265306
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,recipient_last_AB,recipient_last_AB_B_to_A,7,-5.106823979591836,5.106823979591836,0.0,49,7,5.183354591836735
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,final_AB,final_AB_A_to_B,26,9.004464285714286,9.004464285714286,1.0,49,26,9.004464285714286
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,final_AB,final_AB_B_to_A,27,-10.526147959183673,10.526147959183673,1.0,49,27,10.526147959183673
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,recipient_last_AB,recipient_last_AB_A_to_B,6,6.577168367346939,6.577168367346939,1.0,49,6,6.577168367346939
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,recipient_last_AB,recipient_last_AB_B_to_A,7,-5.386160714285714,5.386160714285714,0.1836734693877551,49,7,5.442283163265306

@@ -1,0 +1,11 @@
+torch
+transformers
+accelerate
+safetensors
+sentencepiece
+numpy
+pandas
+scipy
+scikit-learn
+tqdm
+matplotlib

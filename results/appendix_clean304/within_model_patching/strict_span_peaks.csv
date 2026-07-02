@@ -1,0 +1,13 @@
+model,model_short,patch_family,experiment,peak_layer_by_abs_aligned,peak_mean_patch_effect_at_that_layer,peak_mean_aligned_effect,peak_flip_rate_at_that_layer,n_at_peak,peak_layer_by_mean_abs_effect,peak_mean_abs_effect
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,both_span_AD,both_span_AD_A_to_D,3,11.895404411764705,11.895404411764705,0.011764705882352941,85,3,11.895404411764705
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,both_span_AD,both_span_AD_D_to_A,1,-11.878492647058824,11.878492647058824,0.058823529411764705,85,1,11.878492647058824
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,purpose_span_AC,purpose_span_AC_A_to_C,0,11.355288461538462,11.355288461538462,0.03076923076923077,65,0,11.355288461538462
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,purpose_span_AC,purpose_span_AC_C_to_A,2,-11.391586538461539,11.391586538461539,0.15384615384615385,65,2,11.391586538461539
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,recipient_span_AB,recipient_span_AB_A_to_B,5,8.809709821428571,8.809709821428571,0.0,28,5,8.809709821428571
+Qwen/Qwen2.5-7B-Instruct,Qwen2.5-7B-Instruct,recipient_span_AB,recipient_span_AB_B_to_A,6,-8.987165178571429,8.987165178571429,0.14285714285714285,28,6,8.987165178571429
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,both_span_AD,both_span_AD_A_to_D,3,13.715441176470588,13.715441176470588,0.9882352941176471,85,3,13.715441176470588
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,both_span_AD,both_span_AD_D_to_A,3,-13.734375,13.734375,0.9529411764705882,85,3,13.734375
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,purpose_span_AC,purpose_span_AC_A_to_C,0,12.872355769230769,12.872355769230769,0.9846153846153847,65,0,12.872355769230769
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,purpose_span_AC,purpose_span_AC_C_to_A,2,-12.96514423076923,12.96514423076923,0.9846153846153847,65,2,12.96514423076923
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,recipient_span_AB,recipient_span_AB_A_to_B,6,9.431919642857142,9.431919642857142,1.0,28,6,9.431919642857142
+huseyinatahaninan/Qwen2.5-7B-Instruct-CI,Qwen2.5-7B-Instruct-CI,recipient_span_AB,recipient_span_AB_B_to_A,6,-9.680803571428571,9.680803571428571,0.9285714285714286,28,6,9.680803571428571
