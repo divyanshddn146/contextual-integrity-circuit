@@ -72,7 +72,3 @@ trajectory_enhancing: 2/2 normal Yes, 2/2 patched No
 This suggests that the base model has not only downstream L22 machinery, but also a partially usable upstream L18→L22 routing pathway.
 
 However, L18 should be described as an upstream routing component, not the final decision gate. The direct L22 interventions remain stronger.
-
-## Placement
-
-Main or strong supporting main result after base L22 remove/rescue.
