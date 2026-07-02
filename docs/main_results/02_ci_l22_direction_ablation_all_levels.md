@@ -95,10 +95,7 @@ For L22 top100 α=6, generation is clean across all four levels:
 
 The discovered L22 writer-neuron pathway is a causal downstream decision mechanism for CI privacy refusals. Removing its refusal-direction contribution systematically changes No decisions into Yes decisions, while random-neuron controls do not.
 
-## Best paper wording
+## Main claim from this
 
 > Across all four PrivacyLens prompt levels, ablating the CI-discovered L22 writer-neuron contribution along the refusal direction caused systematic No→Yes flips. With the L22 top-100 writer neurons, α=4 flipped 836/1937 normal-No cases, while α=6 flipped all 1937/1937 cases. Random-neuron controls produced zero flips. In generation, the same intervention changed normal No responses into Yes responses across all α=6 cases, while random controls preserved No responses. This indicates that the L22 writer-neuron pathway is a causal downstream decision mechanism for CI privacy refusals.
 
-## Placement
-
-Main text.
