@@ -161,10 +161,6 @@ Random-direction controls are tiny compared with real direction interventions:
 | MLP | 8/95 |
 | residual | 2/95 |
 
-## Placement
-
-Appendix/supporting, but worth one sentence in main text.
-
-Suggested sentence:
+## Main claim from this
 
 > A coarse component-level direction ablation first localized causal signal to L18 attention and late MLP components: removing the D-vs-A direction from L18 attention flipped 93/95 held-out D prompts, and removing it from L22 MLP flipped 91/95, while random directions produced at most 8/95 flips.
