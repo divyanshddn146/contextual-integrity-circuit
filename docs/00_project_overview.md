@@ -31,14 +31,17 @@ The main components are:
 5. **Base L22 remove/rescue:** removing L22 refusal contribution flips 1910/1910 base No cases at α=6; adding CI-like L22 contribution rescues 56/62 base Yes failures at α=2.
 6. **Base L18→L22 remove/rescue:** patching L18 heads toward A flips 453/1910 base No cases; patching toward D rescues 31/62 base Yes failures. Random controls are near zero.
 
-## What to claim carefully
+## What are our claim is
 
-Safe claim:
+Our claim:
 
 > The base model already contains compatible L18→L22 privacy-decision machinery, and CI tuning appears to make privacy-sensitive contexts route into this machinery more reliably.
 
-Avoid overclaiming:
+**What this work does not claim.**
 
-- Do not say the circuit is complete or exhaustive.
-- Do not say L18 fully controls the decision.
-- Do not say rationale generation is fully localized; final decision is more localized than full rationale.
+1. We do **not** claim to have found the complete or exhaustive privacy circuit. We identify a candidate pathway that is causally involved in the final privacy decision.
+
+2. We do **not** claim that L18 attention heads fully control the decision. Our claim is that these heads act as important upstream routing components that help activate the downstream L22 MLP pathway.
+
+3. We do **not** claim that full rationale generation is localized to this pathway. The evidence is stronger for the first Yes/No decision than for the complete explanation, which likely depends on broader distributed mechanisms.
+
