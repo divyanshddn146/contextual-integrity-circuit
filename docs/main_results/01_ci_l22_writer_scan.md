@@ -75,8 +75,5 @@ Random controls are much weaker. The main interpretation is that a small set of 
 - `mlp_neuron_writer_zero_check`: zeroing writer neurons is weaker but still shows causal effect.
 - `mlp_neuron_writer_base`: base-model writer scores also identify L22 N13149, supporting shared base/CI machinery. Its ablation part is not the main result because the ablation summary is tiny/incomplete.
 
-## Placement
-
-Main text.
-
+## Main claim from this
 This is the discovery result for the downstream L22 writer-neuron pathway.
