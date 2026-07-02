@@ -42,7 +42,7 @@ Divyansh Agarwal \quad | \quad July 2026\\[-0.15em]
 
 \section{Motivation}
 
-Recent work on contextual integrity in LLMs asks whether an assistant should disclose information given the sender, recipient, information type, purpose, and context. The CI-RL paper shows that explicit CI reasoning and reinforcement learning can improve privacy-related behavior, including transfer to PrivacyLens-style evaluations \cite{lan2025ci}. My goal is complementary: \textbf{instead of only asking whether CI tuning improves behavior, I ask what internal mechanism changes after CI tuning.}
+Recent work on contextual integrity frames privacy as the appropriateness of information flows in context, including the sender, recipient, information type, purpose, and surrounding norms \cite{nissenbaum2004privacy}. The CI-RL paper shows that explicit CI reasoning and reinforcement learning can improve privacy-related behavior, including transfer to the PrivacyLens benchmark \cite{lan2025ci,shao2024privacylens}. My goal is complementary: \textbf{instead of only asking whether CI tuning improves behavior, I ask what internal mechanism changes after CI tuning.}
 
 The motivating question is:
 \begin{quote}
@@ -53,7 +53,7 @@ This matters for white-box control of contextual agents. If a model already cont
 
 \section{Experimental setup}
 
-I compare \textbf{Qwen2.5-7B-Instruct} with a released \textbf{Qwen2.5-7B-Instruct-CI} variant used in the CI-RL/PrivacyLens line of work. Prompts follow a PrivacyLens-style contextual-integrity structure: the model sees a sharing scenario and must answer whether sharing is acceptable.
+This study analyzes a released contextual-integrity-tuned checkpoint from the CI-RL/PrivacyLens work. I compare the original \textbf{Qwen2.5-7B-Instruct} base model \cite{qwen25base} with the released \textbf{Qwen2.5-7B-Instruct-CI} checkpoint \cite{qwen25ci}, which is described as a CI-RL fine-tuned Qwen2.5-7B-Instruct model associated with the CI-RL paper \cite{lan2025ci}. I do not train a new CI model in this project. Instead, I treat the released CI-tuned checkpoint as the object of mechanistic study and ask which internal components implement its privacy-decision behavior. Prompts follow a PrivacyLens-style contextual-integrity structure \cite{shao2024privacylens}: the model sees a sharing scenario and must answer whether sharing is acceptable.
 
 \begin{center}
 \small
@@ -61,7 +61,7 @@ I compare \textbf{Qwen2.5-7B-Instruct} with a released \textbf{Qwen2.5-7B-Instru
 \toprule
 \textbf{Item} & \textbf{Description} \\
 \midrule
-Models & Base Qwen2.5-7B-Instruct and CI-tuned Qwen2.5-7B-Instruct-CI. \\
+Models & Base Qwen2.5-7B-Instruct \cite{qwen25base} and the released CI-tuned Qwen2.5-7B-Instruct-CI checkpoint \cite{qwen25ci}. \\
 Task & Privacy/contextual-integrity sharing decision; answer Yes/No, often with a short reason. \\
 Conditions & A = allowed sharing; B = recipient violation; C = purpose violation; D = both recipient and purpose violations. \\
 Prompt levels & seed, vignette, trajectory, trajectory-enhancing; each level contains 493 prompts in the all-level sweep. \\
@@ -74,7 +74,7 @@ The project developed in stages. I first verified that broad final-token directi
 
 \section{Main finding 1: L22 MLP writer neurons control CI refusals}
 
-In the CI-tuned model, an MLP writer-neuron scan identifies a localized late-MLP pathway. The strongest single neuron is \textbf{L22 neuron 13149}. It behaves like an allowed/Yes-supporting writer that is suppressed on disallowed prompts, so removing its refusal-aligned contribution can flip refusals into Yes responses.
+In the CI-tuned model, we identified a localized late-MLP pathway involved in the final privacy decision. The strongest single neuron in this pathway is \textbf{L22 neuron 13149}. It behaves like an allowed/Yes-supporting writer that is suppressed on privacy-violating prompts. Removing the refusal-aligned contribution from this L22 writer-neuron pathway can flip privacy refusals into Yes responses.
 
 I then evaluated L22 writer-neuron direction ablation across all four PrivacyLens prompt levels. The intervention removes the refusal-direction contribution from selected L22 writer neurons on normal-No cases. Random-neuron controls use matched random L22 neurons.
 
@@ -95,11 +95,11 @@ trajectory-enhancing & 493 & 137/493 & 493/493 & 0 \\
 \end{center}
 \tightcaption{Table 1. L22 top-100 writer-neuron direction ablation in the CI model. At $\alpha=6$, the intervention flips every normal-No case to Yes across all four prompt levels, while random-neuron controls produce no flips.}
 
-\textbf{Interpretation.} L22 writer neurons are not just correlated with privacy refusals. Removing their refusal-aligned contribution is sufficient to flip the final decision across the full all-level evaluation. This suggests that L22 contains a downstream decision-writing mechanism for the CI model's privacy refusals.
+\textbf{Interpretation.} L22 writer neurons are not just correlated with privacy refusals. Under sufficiently strong direction ablation, removing their refusal-aligned contribution reliably shifts the final decision from No to Yes across the all-level evaluation. At $\alpha=4$, the intervention flips 836/1937 normal-No cases, and at $\alpha=6$ it flips 1937/1937 cases, while random-neuron controls produce no flips. This suggests that L22 contains a downstream decision-writing mechanism that is causally involved in the CI model's privacy refusals.
 
 \section{Main finding 2: L18 attention heads route into L22}
 
-After localizing the downstream writer pathway, I looked for upstream attention components that feed into it. A head-level scan identifies a small set of L18 attention heads, especially \textbf{H15, H18, H4, H13, and H20}. Patching these heads toward the allowed-state mean shifts both the final Yes/No margin and the activation of downstream \textbf{L22 neuron 13149}.
+After localizing the downstream writer pathway, I looked for upstream attention components that feed into it. A head-level scan identifies a small set of L18 attention heads, especially \textbf{H15, H18, H4, H13, and H20}. Patching these heads toward the allowed-state/Yes supporting state mean shifts both the final Yes/No margin and the activation of downstream \textbf{L22 neuron 13149}.
 
 \begin{center}
 \small
@@ -122,7 +122,7 @@ trajectory-enhancing & 493 & 14/493 & 0/493 & +12.56 & 0.936 \\
 
 \section{Main finding 3: the base model already contains compatible machinery}
 
-To test whether CI tuning creates a new mechanism or makes existing machinery more reliable, I repeated remove/rescue experiments in the base model. The key result is that both downstream L22 and upstream L18 interventions work in the base model too.
+To test whether the CI-tuned model uses a newly created mechanism or makes better use of machinery already present in the base model, I ran two kinds of base-model interventions. In a \textbf{remove} experiment, I start from base-model cases where the model already says No, and remove the L22 or L18 contribution to see whether the refusal disappears. In a \textbf{rescue} experiment, I start from base-model failure cases where the model incorrectly says Yes, and add or patch in a refusal-like L22 or L18 contribution to see whether the model can be pushed back to No.
 
 \begin{center}
 \small
@@ -170,10 +170,36 @@ The current results are a pilot, not a final mechanistic proof. The most useful 
 \resultbox{\textbf{One-sentence summary.} My current evidence suggests that the CI-tuned model does not learn privacy behavior by creating a completely new circuit; rather, the base model already contains a compatible L18 attention $\rightarrow$ L22 MLP privacy-decision pathway, and CI tuning makes privacy-sensitive prompts activate this pathway more reliably.}
 
 \begin{thebibliography}{9}
+
+\bibitem{nissenbaum2004privacy}
+Nissenbaum, H. (2004).
+\textit{Privacy as contextual integrity}.
+Washington Law Review, 79(1), 119--158.
+\url{https://digitalcommons.law.uw.edu/wlr/vol79/iss1/10/}
+
+\bibitem{shao2024privacylens}
+Shao, Y., Li, T., Shi, W., Liu, Y., \& Yang, D. (2024).
+\textit{PrivacyLens: Evaluating privacy norm awareness of language models in action}.
+Advances in Neural Information Processing Systems, 37, 89373--89407.
+
 \bibitem{lan2025ci}
-Guangchen Lan, Huseyin A. Inan, Sahar Abdelnabi, Janardhan Kulkarni, Lukas Wutschitz, Reza Shokri, Christopher G. Brinton, and Robert Sim. \textit{Contextual Integrity in LLMs via Reasoning and Reinforcement Learning}. NeurIPS 2025. arXiv:2506.04245. \url{https://arxiv.org/abs/2506.04245}
-\bibitem{compass}
-Sahar Abdelnabi. \textit{COMPASS Research Group}. \url{https://s-abdelnabi.github.io/}
+Lan, G. E., Inan, H. A., Abdelnabi, S., Kulkarni, J., Wutschitz, L., Shokri, R., Brinton, C. G., \& Sim, R. (2026).
+\textit{Contextual integrity in LLMs via reasoning and reinforcement learning}.
+Advances in Neural Information Processing Systems, 38, 104355--104391.
+\url{https://arxiv.org/abs/2506.04245}
+
+\bibitem{qwen25ci}
+Inan, H. A. (2025).
+\textit{Qwen2.5-7B-Instruct-CI}.
+Hugging Face model checkpoint.
+\url{https://huggingface.co/huseyinatahaninan/Qwen2.5-7B-Instruct-CI}
+
+\bibitem{qwen25base}
+Qwen Team. (2024).
+\textit{Qwen2.5-7B-Instruct}.
+Hugging Face model checkpoint.
+\url{https://huggingface.co/Qwen/Qwen2.5-7B-Instruct}
+
 \end{thebibliography}
 
 \end{document}
