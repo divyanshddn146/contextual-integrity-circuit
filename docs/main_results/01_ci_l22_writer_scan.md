@@ -18,8 +18,6 @@ This uses the clean304-derived AD subset:
 | Test | 95 |
 | Total AD cases | 190 |
 
-Do not describe this experiment as using all 304 clean prompts.
-
 ## Method
 
 For each MLP neuron, the writer score is:
