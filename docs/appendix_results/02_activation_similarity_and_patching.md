@@ -170,8 +170,4 @@ This older result tests whether hidden-state patching can move one PrivacyLens c
 | both_span_AD | A→D | 3 | 85 | 98.8% |
 | both_span_AD | D→A | 3 | 85 | 95.3% |
 
-## Placement
-
-Appendix/supporting.
-
-These results support shared geometry and broad causal direction, but the main causal story should remain focused on the targeted L18→L22 pathway.
+These results support shared geometry and broad causal direction, but the main causal story is more focused on the targeted L18→L22 pathway.
