@@ -1,0 +1,17 @@
+checkpoint,intervention,layer,n,mean_aligned_margin_effect,decision_changes
+Base,recipient position A->B,6,49,6.332908163265306,0/49
+CI,recipient position A->B,6,49,6.577168367346939,49/49
+Base,final position A->B,26,49,8.441645408163266,0/49
+CI,final position A->B,26,49,9.004464285714286,49/49
+Base,final position B->A,26,49,8.469706632653061,0/49
+CI,final position B->A,26,49,9.029017857142858,47/49
+Base,purpose position A->C,9,87,7.731860632183908,2/87
+CI,purpose position A->C,9,87,8.73150143678161,84/87
+Base,final position A->C,26,87,11.489942528735632,2/87
+CI,final position A->C,26,87,13.082614942528735,86/87
+Base,final position C->A,26,87,11.51885775862069,0/87
+CI,final position C->A,26,87,13.108656609195402,86/87
+Base,final position A->D,26,190,12.66340460526316,1/190
+CI,final position A->D,26,190,14.419901315789474,188/190
+Base,final position D->A,26,190,12.694736842105264,1/190
+CI,final position D->A,26,190,14.461266447368422,186/190

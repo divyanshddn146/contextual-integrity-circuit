@@ -1,10 +1,10 @@
-# Final input CSVs
-
-Canonical input CSVs retained in the public repo:
+# Final controlled input CSVs
 
 | File | Rows | Purpose |
 |---|---:|---|
-| `curated_candidate_pool_source_capped_CLEAN304.csv` | 304 | Main clean304 scenario pool. |
-| `source_capped_CLEAN304_improvement_eligibility.csv` | 304 | Clean304 eligibility, behavior flags, margins, and patching metadata. |
-| `curated_candidate_pool_source_capped_for_patching.csv` | 391 | Broader source-capped pool for appendix patching/similarity/cross-model analyses. |
-| `curated_improvement_eligibility_source_capped.csv` | 391 | Eligibility and behavior metadata for the 391-scenario appendix pool. |
+| `curated_candidate_pool_source_capped_CLEAN304.csv` | 304 | Main controlled scenario pool. |
+| `source_capped_CLEAN304_improvement_eligibility.csv` | 304 | Base/CI behavior, margins, eligibility, and patching metadata for CLEAN304. |
+| `curated_candidate_pool_source_capped_for_patching.csv` | 391 | Broader source-capped pool used in full patching/similarity sweeps. |
+| `curated_improvement_eligibility_source_capped.csv` | 391 | Eligibility and behavior metadata for the broader patching pool. |
+
+The report-specific contrast counts are documented in `docs/03_dataset_and_splits.md`.

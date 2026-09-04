@@ -1,48 +1,51 @@
-# Mechanistic Analysis of Contextual-Integrity Privacy Decisions
+# Does Privacy Post-Training Create New Mechanisms or Reuse Old Ones?
 
-This repository contains a mechanistic pilot study of contextual-integrity privacy decisions in `Qwen2.5-7B-Instruct` and a contextual-integrity-tuned variant. The project asks what changes inside the model after CI tuning: does the tuned model learn a new privacy mechanism from scratch, or does it make better use of machinery already present in the base model?
+This repository contains a mechanistic model-diffing study of two checkpoints with the same `Qwen2.5-7B-Instruct` architecture:
 
-The main evidence points to a candidate pathway:
+- **Base:** `Qwen2.5-7B-Instruct`
+- **CI:** the contextual-integrity post-trained checkpoint released with CI-RL
 
-```text
-L18 attention heads  →  L22 MLP writer-neuron pathway  →  final Yes/No privacy decision
-```
+The project starts from a simple question. CI post-training makes the model much more reliable at contextual privacy decisions, but **what changed internally?** Did training create new privacy machinery, or did it change how machinery already present in Base is recruited and expressed?
 
-## Central claim
+## Main conclusion
 
-CI tuning does not appear to create an entirely new privacy circuit. Instead, the base model already contains a compatible L18 attention → L22 MLP privacy-decision pathway, and CI tuning makes privacy-sensitive prompts activate this pathway more reliably.
+The evidence favors **reuse of substantially pre-existing machinery**.
+
+Base already contains usable recipient- and purpose-related information. Base and CI preserve highly aligned privacy-related representations, and late states are functionally readable across checkpoints. The important difference appears later in the computation, around layer 18, where the privacy distinction becomes strongly decision-relevant. In CI this transition can be localized to a small set of L18 attention heads followed by a broader late-MLP writer pathway, including L22 neuron N13149.
+
+The strongest test is then performed back inside Base. The same L18 and L22 machinery can be disrupted and rescued by targeted intervention, and Base and CI share most of their highest-ranked late writer neurons. This makes an entirely new-circuit explanation substantially less plausible.
+
+The claim is intentionally narrower than a complete privacy circuit. The mechanistic results concern the **first Yes/No privacy decision**. The L18-to-L22 evidence is downstream propagation, not formal blocked mediation, and N13149 is a strong localized handle rather than a unique bottleneck.
 
 ## Start here
 
-For a concise overview, read the 3-page technical note:
+The current full report is:
 
-```text
-docs/technical_note/CI_Privacy_MechInterp_Technical_Note.pdf
-```
+[`docs/report/Does_Privacy_Post_Training_Create_New_Mechanisms_or_Reuse_Old_Ones.pdf`](docs/report/Does_Privacy_Post_Training_Create_New_Mechanisms_or_Reuse_Old_Ones.pdf)
 
-For the project map and result details, read:
+For a fast repository-level view:
 
-```text
-docs/00_project_overview.md
-docs/02_main_story.md
-docs/RESULT_SUMMARY.md
-docs/RESULT_INDEX.md
-docs/MAIN_RESULTS_CHECKLIST.md
-```
+1. [`docs/00_project_overview.md`](docs/00_project_overview.md), the research question and experimental sequence.
+2. [`docs/01_evidence_map.md`](docs/01_evidence_map.md), claim-to-script-to-result mapping.
+3. [`docs/02_reproducibility.md`](docs/02_reproducibility.md), where each analysis lives.
+4. [`docs/03_dataset_and_splits.md`](docs/03_dataset_and_splits.md), datasets, eligibility rules, and sample counts.
+5. [`figures/README.md`](figures/README.md), saved figures and their plotting scripts.
 
-Detailed result notes are organized as:
+## Experimental story
 
-```text
-docs/main_results/
-docs/appendix_results/
-```
+The repository now follows the order of the current report rather than the earlier CI-circuit-first organization.
 
-## Headline results
-
-- **CI L22 direction ablation:** ablating the CI-discovered L22 writer-neuron contribution flips **1937/1937** normal-No PrivacyLens cases to Yes across all four prompt levels at α=6; random-neuron controls flip **0**.
-- **CI L18→L22 mediation:** patching the top L18 attention heads shifts L22 neuron 13149 toward the allowed state across all four PrivacyLens levels, with strong correlations between L22 activation shift and Yes/No margin shift.
-- **Base L22 remove/rescue:** removing the L22 refusal contribution flips **1910/1910** base-model refusals to Yes; adding a CI-like L22 contribution rescues **56/62** base Yes failures into No.
-- **Base L18→L22 remove/rescue:** patching L18 heads toward the allowed state flips **453/1910** base refusals to Yes; patching them toward the refusal state rescues **31/62** base Yes failures to No.
+| Stage | Question | Main evidence |
+|---|---|---|
+| 1 | How large is the behavioral change? | On controlled D cases, accuracy rises from **33.2% in Base to 95.7% in CI**. |
+| 2 | Did Base simply lack the needed contextual information? | Within-model patching shows recipient- and purpose-related states in Base already move the decision margin strongly. |
+| 3 | Are the checkpoints using incompatible representations? | Privacy-related directions remain closely aligned, and Base-produced semantic states can be used by CI. |
+| 4 | Where does the checkpoint difference become decision-relevant? | Same-prompt cross-checkpoint transfer becomes sharply effective around **L18** and nearly exchanges late decisions. |
+| 5 | What computation is concentrated near that transition? | L18 attention has a sharp intervention effect, while late MLP writing is broader across roughly L18 to L22. |
+| 6 | Can the pathway be localized further? | L18 heads H15, H18, H4, H13, H20 and the late writer set, especially **L22 N13149**, provide strong localized handles. |
+| 7 | Does the mechanism transfer beyond controlled templates? | Fixed CLEAN304-derived L18/L22 components remain behaviorally active on all four PrivacyLens prompt levels. |
+| 8 | Was this machinery already active before CI tuning? | Targeted L18/L22 remove and rescue interventions work directly inside Base, far above matched random controls. |
+| 9 | What remains different between checkpoints? | Same-prompt correction cases show a pronounced downstream difference at N13149, but do not isolate whether the origin is upstream routing, downstream calibration, or both. The 27 matched rows are exported directly in `results/privacylens/same_prompt_correction_analysis.csv`. |
 
 ## Repository structure
 
@@ -52,79 +55,76 @@ contextual-integrity-circuit/
   requirements.txt
 
   docs/
-    technical_note/
-    main_results/
-    appendix_results/
-    RESULT_SUMMARY.md
-    RESULT_INDEX.md
-    MAIN_RESULTS_CHECKLIST.md
+    report/                     # current full report
+    results/                    # result notes in report order
+    appendix/                   # controls and robustness notes
+    00_project_overview.md
+    01_evidence_map.md
+    02_reproducibility.md
+    03_dataset_and_splits.md
 
   data/
-    raw/
+    raw/PrivacyLens/
     final/
 
   scripts/
-    main/
-    appendix/
-    utils_or_legacy/
+    clean304/                   # controlled discovery and model-diffing analyses
+    privacylens/                # transfer, propagation, and Base tests
+    figures/                    # plotting scripts for saved figures
+
+  figures/
+    summary/                    # executive-summary synthesis figure
+    clean304/                   # controlled/model-diffing figures
+    privacylens/                # transfer figures
 
   results/
-    main/
-    appendix_clean304/
+    clean304/                   # controlled discovery/model-diffing outputs
+    privacylens/                # out-of-discovery PrivacyLens outputs
 
   tables/
-    README.md
+    clean304/
+    privacylens/
     table_index.csv
-    main/
-    appendix/
 ```
 
-## Main result folders
+## Key result folders
+
+Controlled discovery and model diffing:
 
 ```text
-results/main/
-  ci_l22_writer_scan/
-  ci_l22_direction_ablation/
-  ci_l18_attention_head_scan/
-  ci_l18_to_l22_mediation/
-  base_l22_remove_rescue/
-  base_l18_to_l22_remove_rescue/
+results/clean304/within_model_patching/
+results/clean304/activation_similarity/
+results/clean304/cross_model_transfer/
+results/clean304/final_direction_ablation/
+results/clean304/component_direction_ablation/
+results/clean304/writer_neuron_scan/
 ```
 
-## Main scripts
+PrivacyLens transfer and the pre-existing-machinery test:
 
 ```text
-scripts/main/
-  mlp_neuron_writer_scan.py
-  privacylens_direction_ablation_generation.py
-  privacylens_attention_head_writer_scan_ablation.py
-  privacylens_l18_heads_to_l22_mlp_mediation_with_generation.py
-  base_privacylens_direction_remove_rescue.py
-  base_privacylens_l18_to_l22_rescue_mediation_with_generation.py
+results/privacylens/ci_l22_writer_transfer/
+results/privacylens/ci_l18_head_transfer/
+results/privacylens/ci_l18_to_l22_propagation/
+results/privacylens/base_l22_remove_rescue/
+results/privacylens/base_l18_remove_rescue/
+results/privacylens/same_prompt_correction_analysis.csv
 ```
 
-## Summary tables
-
-Compact, human-readable tables used by the README and technical note are under:
+Supporting CLEAN304 robustness and writer-overlap analyses are kept under:
 
 ```text
-tables/main/
-tables/appendix/
+results/clean304/supporting/
 ```
 
-These are summary tables only. Full raw run outputs remain under `results/`.
+## Reproducibility
 
-## Dataset note
+The repository includes the final input CSVs, saved result tables, detailed run outputs, saved PDF/PNG figures, and the scripts used for the reported analyses and plots. Large model checkpoints are not redistributed.
 
-Input datasets belong under `data/`, not under `results/`. Main all-level PrivacyLens experiments use four prompt levels: `seed`, `vignette`, `trajectory`, and `trajectory_enhancing`. Several appendix experiments use clean304-derived A/D or A/B/C/D subsets. See `data/README.md`, `docs/03_dataset_usage.md`, and `docs/RESULT_SUMMARY.md` for exact counts.
+The main controlled dataset is CLEAN304. PrivacyLens is used as an out-of-discovery transfer distribution. Writer rankings and the L18 head ranking are fixed before the PrivacyLens validation tests.
 
-The cleaned package includes result outputs and documentation. Add the raw PrivacyLens file and curated clean304 CSV under `data/` if redistribution is allowed.
+See [`docs/02_reproducibility.md`](docs/02_reproducibility.md) for the exact script and result mapping.
 
-## Caveat
+## Scope
 
-The final Yes/No decision is easier to localize than the full generated rationale. The current result should be read as evidence for a candidate decision pathway, not as a complete explanation of all privacy reasoning or generated explanations.
-
-
-## Data audit
-
-The cleaned repo includes only the final input data needed for the reported analyses. See `docs/DATA_CSV_AUDIT.md` for a file-by-file decision on older CSVs.
+This work supports a **candidate privacy-decision pathway**, not an exhaustive explanation of contextual privacy reasoning. Whole-state patching can move many latent variables at once, some interventions use large strengths, and generated rationales are evaluated only qualitatively. The strongest conclusions are about intervention-based control of the first Yes/No decision.

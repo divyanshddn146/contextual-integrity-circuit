@@ -1,0 +1,7 @@
+analysis,intervention_or_metric,cases,result,interpretation
+Writer sufficiency,"L20 top100 additive D-minus-A, alpha=3 on held-out A prompts",95,95/95 Yes-to-No,high-strength sufficiency stress test
+Writer sufficiency,"L22 top100 additive D-minus-A, alpha=3 on held-out A prompts",95,79/95 Yes-to-No,downstream writer coordinates can drive the D-like decision when pushed strongly
+Base/CI writer overlap,L22 independently ranked top100 overlap,100,92/100 shared,strong structural overlap across checkpoints
+Base/CI writer overlap,global multilayer independently ranked top100 overlap,100,90/100 shared,shared late writer basis across checkpoints
+CI-derived writer change in Base,"top-ranked CI writer, alpha=1 on held-out Base D failures",95,93/95 changed,CI-estimated writer displacement is usable by Base
+CI-derived writer change in Base,"CI top5 writers, alpha=0.5 on held-out Base D failures",95,92/95 changed,cross-checkpoint functional compatibility at writer level

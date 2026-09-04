@@ -1,10 +1,14 @@
-table_file,section,purpose
-main/table_1_ci_l22_direction_ablation_all_levels.csv,main,All-level L22 writer-neuron direction ablation result.
-main/table_2_ci_l18_to_l22_mediation_all_levels.csv,main,All-level L18 attention-head to L22 neuron mediation result.
-main/table_3_base_l22_l18_remove_rescue.csv,main,Base-model remove/rescue evidence for pre-existing compatible machinery.
-main/table_4_ci_l22_writer_scan_top_neurons.csv,main,Top writer neurons from the CI MLP writer scan.
-main/table_5_ci_l18_attention_head_scan_top_heads.csv,main,Top L18 attention heads from the discovery scan.
-appendix/table_a1_component_direction_ablation.csv,appendix,Component-level localization support.
-appendix/table_a2_activation_similarity_final_token.csv,appendix,Base/CI hidden-state similarity support.
-appendix/table_a3_cross_model_d_final_patching.csv,appendix,Cross-model D-final patching support.
-appendix/table_a4_mlp_sufficiency_and_overlap.csv,appendix,MLP add-delta sufficiency and base/CI neuron overlap support.
+table_file,report_role,purpose
+clean304/controlled_behavior.csv,Finding 1,Controlled A/B/C/D behavior for Base and CI.
+clean304/within_model_patching_summary.csv,Finding 1,Representative within-model patching results at report-valid sites.
+clean304/strict_span_patching_summary.csv,Appendix C,Length-compatible span patching controls.
+clean304/activation_similarity_final_token.csv,Finding 1,Late Base/CI raw-state and counterfactual-direction similarity.
+clean304/same_prompt_cross_model_transfer.csv,Finding 1,Same-prompt late cross-checkpoint D-state transfer.
+clean304/component_direction_ablation.csv,Finding 2,L18 attention versus broader late MLP component localization.
+clean304/writer_scan_top_neurons.csv,Finding 2,"Top writer neurons, including L22 N13149."
+clean304/writer_sufficiency_and_overlap.csv,Appendices I and M,"Writer sufficiency, overlap, and cross-checkpoint writer reuse."
+privacylens/ci_l22_writer_transfer.csv,Transfer,Fixed CLEAN304-derived L22 writer transfer to PrivacyLens.
+privacylens/ci_l18_head_transfer.csv,Transfer,CLEAN304-ranked L18 head set evaluated on PrivacyLens.
+privacylens/ci_l18_to_l22_propagation.csv,Transfer,L18 intervention with downstream N13149 tracking across PrivacyLens levels.
+privacylens/base_remove_rescue.csv,Key post-training test,Base L22 and L18 remove/rescue with matched random controls.
+privacylens/same_prompt_correction_summary.csv,Appendix N,Summary of the 27 exact Base-Yes/CI-No PrivacyLens correction cases.

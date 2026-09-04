@@ -1,47 +1,88 @@
 # Project overview
 
-## Core hypothesis
+## Research question
 
-The project asks whether contextual-integrity (CI) tuning creates a new privacy mechanism, or instead makes the model use machinery that is already present in the base model.
+Contextual-integrity post-training substantially improves privacy decisions in Qwen2.5-7B-Instruct. This project asks what internal change produced that improvement.
 
-The current evidence supports the second interpretation:
+Two broad hypotheses motivated the experimental sequence:
 
-> CI tuning does not appear to create an entirely new privacy circuit. Instead, the base model already contains compatible privacy-decision machinery, and CI tuning makes privacy-sensitive prompts activate this machinery more reliably.
+1. **New-mechanism hypothesis.** CI training creates a qualitatively new privacy representation or circuit that Base did not previously contain.
+2. **Reuse/recruitment hypothesis.** Base already contains much of the relevant machinery, and CI training changes how reliably that machinery is recruited, integrated, or expressed in the final decision.
 
-## Mechanistic picture
+The current evidence favors the second hypothesis.
 
-The strongest current pathway hypothesis is:
+## Experimental sequence
+
+### 1. Establish the behavioral gap
+
+I first use matched A/B/C/D counterfactuals that independently manipulate recipient appropriateness and purpose appropriateness. The cleanest contrast is A versus D. On D, where both recipient and purpose are inappropriate, Base is correct on 101/304 cases while CI is correct on 291/304.
+
+### 2. Ask whether Base already contains useful contextual information
+
+Within-model patching shows that recipient- and purpose-related states in Base can already move the Yes/No margin strongly in the expected direction. This weakens the idea that CI succeeds simply because it learned contextual information that Base never represented.
+
+### 3. Compare the checkpoints directly
+
+Activation similarity shows that Base and CI remain geometrically close, including strongly aligned privacy-related contrast directions in late layers. Cross-model patching then asks a stronger functional question: can a state produced by one checkpoint still be used by the other?
+
+Base-produced semantic states are highly usable by CI. In the reverse direction, CI local semantic states often move Base without fully crossing its native decision boundary. Once a late CI decision state has formed, however, Base can use it reliably.
+
+### 4. Locate where the difference becomes decision-relevant
+
+On identical D prompts, final-position state transfer has modest effects through the earlier network, then changes sharply around L18. By the late layers, swapping the checkpoint state nearly swaps the decision.
+
+A discovery-derived D-minus-A direction shows the same transition. The direction is already readable before L18, but intervention on that direction becomes strongly behavior-changing around L18.
+
+### 5. Decompose the L18 transition
+
+Component-level intervention separates a sharp L18 attention effect from broader late MLP writing. Attention peaks strongly at L18, while MLP contributions remain large across several later layers.
+
+A head-level scan identifies the fixed L18 set H15, H18, H4, H13, and H20. A late writer scan identifies L22 N13149 as the strongest individual writer handle, with a broader set of late writer neurons also contributing.
+
+### 6. Test out-of-discovery transfer
+
+The discovered L18/L22 machinery is then frozen and tested on PrivacyLens rather than re-discovered there. The L22 writer intervention changes decisions across all four prompt levels. The fixed L18 head set also changes decisions and moves downstream N13149 in the predicted direction.
+
+This L18-to-L22 result is best described as **downstream propagation or pathway validation**. It is not formal blocked mediation.
+
+### 7. Test whether the same machinery was already active in Base
+
+This is the key post-training test. I apply the fixed pathway logic directly inside Base.
+
+Targeted L22 removal disrupts native Base No decisions, while the reverse intervention rescues many Base Yes failures. The same two-way logic works upstream at the fixed L18 head set, although the L18 effect is weaker than the direct L22 effect. Matched random controls are near zero.
+
+The result argues against the idea that CI created a completely new pathway that was absent from Base.
+
+### 8. Compare writer identities and naturally occurring correction cases
+
+Base and CI share most of their independently ranked top late-MLP writer neurons. CI-derived writer changes can also be read and used by Base.
+
+Finally, on identical PrivacyLens prompts where Base answers Yes and CI answers No, the corrected CI decision is accompanied by a substantial shift at the previously identified L22 writer neuron N13149. This last comparison is observational and does not establish where the checkpoint difference first originates.
+
+## Current mechanistic picture
 
 ```text
-L18 attention heads → L22 MLP writer-neuron pathway → final Yes/No privacy decision
+recipient, purpose, contextual setting
+                |
+                v
+      L18 attention contribution
+       H15 H18 H4 H13 H20
+                |
+                v
+       late MLP writer state
+  L22 N13149 + broader writer set
+                |
+                v
+        first Yes/No decision
 ```
 
-The main components are:
+The pathway is substantially shared across Base and CI. The remaining model-diffing question is finer grained: whether post-training primarily changes upstream routing, downstream writer-state calibration, or an interaction between the two.
 
-- **Upstream routing heads:** L18H15, L18H18, L18H4, L18H13, L18H20.
-- **Downstream writer pathway:** L22 MLP writer neurons, especially **L22 N13149**.
-- **Decision direction:** D/disallowed/refusal vs A/allowed/permission direction.
+## What this project does not establish
 
-## High-level results
-
-1. **CI L22 writer-neuron scan:** L22 N13149 is the strongest writer neuron. On the clean304-derived AD split, ablating its writer contribution flips 95/95 held-out D prompts from No to Yes.
-2. **CI L22 direction ablation across all PrivacyLens levels:** L22 top100 α=4 flips 836/1937 normal-No cases; α=6 flips 1937/1937. Random controls flip 0.
-3. **CI L18 attention-head scan:** L18 top5 patch shifts the Yes margin by +16.67 and flips 150/478 CI trajectory refusals; random heads flip only 1–4.
-4. **CI L18→L22 mediation across all levels:** L18 top5 consistently shifts L22 N13149 toward A/allowed and has strong correlation between L22 shift and margin shift.
-5. **Base L22 remove/rescue:** removing L22 refusal contribution flips 1910/1910 base No cases at α=6; adding CI-like L22 contribution rescues 56/62 base Yes failures at α=2.
-6. **Base L18→L22 remove/rescue:** patching L18 heads toward A flips 453/1910 base No cases; patching toward D rescues 31/62 base Yes failures. Random controls are near zero.
-
-## What are our claim is
-
-Our claim:
-
-> The base model already contains compatible L18→L22 privacy-decision machinery, and CI tuning appears to make privacy-sensitive contexts route into this machinery more reliably.
-
-**What this work does not claim.**
-
-1. We do **not** claim to have found the complete or exhaustive privacy circuit. We identify a candidate pathway that is causally involved in the final privacy decision.
-
-2. We do **not** claim that L18 attention heads fully control the decision. Our claim is that these heads act as important upstream routing components that help activate the downstream L22 MLP pathway.
-
-3. We do **not** claim that full rationale generation is localized to this pathway. The evidence is stronger for the first Yes/No decision than for the complete explanation, which likely depends on broader distributed mechanisms.
-
+- It does not identify a complete privacy circuit.
+- It does not establish that N13149 is a unique bottleneck or uniquely semantic privacy neuron.
+- The L18-to-L22 evidence is not formal blocked mediation.
+- Some high-strength interventions are controllability stress tests rather than naturalistic perturbations.
+- The strongest mechanistic claims concern the first Yes/No decision, not the full generated rationale.
+- The study compares one Base/CI checkpoint pair, so generalization across model families remains open.

@@ -1,0 +1,13 @@
+quantity,value
+n_correction_cases,27.0
+seed_cases,4.0
+vignette_cases,5.0
+trajectory_cases,16.0
+trajectory_enhancing_cases,2.0
+literature_cases,12.0
+crowdsourcing_cases,9.0
+regulation_cases,6.0
+mean_base_margin,2.025462962962963
+mean_ci_margin,-2.939814814814815
+mean_ci_minus_base_margin,-4.965277777777778
+mean_ci_minus_base_n13149_activation,-6.711056179470486

@@ -1,0 +1,3 @@
+patch_direction,site,best_layer,cases,main_effect,patched_decision_rate,interpretation
+base D final activation -> CI D prompt,final token,26,190,destroys CI refusals in 188/190 cases,patched Yes rate 100%,late Base D state is usable by CI at the latest valid matched block-output site
+CI D final activation -> base D prompt,final token,26,190,rescues base D failures in 189/190 cases,patched No rate 100%,late CI D state is usable by Base at the latest valid matched block-output site
