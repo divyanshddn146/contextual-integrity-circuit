@@ -19,7 +19,7 @@ A simple explanation would be that Base never represented the recipient or purpo
 
 ### Recipient information
 
-On the 49 eligible A/B cases, patching the Base recipient-aligned state from A toward the B condition at the recipient position produces a large average decision-margin movement. At the strongest recipient-last site, the Base mean aligned effect is about 6.33 logit units even though it does not usually cross Base's decision boundary.
+On the 49 eligible A/B cases, patching the A-condition recipient state into the matched B target at the recipient position produces a large average decision-margin movement. At the strongest recipient-last site, the Base mean aligned effect is about 6.33 logit units even though it does not usually cross Base's decision boundary.
 
 CI shows a comparable local margin movement, but because its downstream decision process is already privacy-sensitive, the same kind of patch is much more likely to change the final answer.
 

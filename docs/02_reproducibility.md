@@ -31,7 +31,7 @@ scripts/clean304/mlp_neuron_sufficiency_steer.py
 scripts/clean304/writer_overlap_and_cross_checkpoint_reuse.py
 ```
 
-The first four scripts use `ci_dataset.py` as a local helper. The writer and component analyses also use the same CLEAN304 construction.
+`run_behavior.py`, `mine_ci_improvement_cases.py`, and `run_patching.py` use `ci_dataset.py` as a local helper. The writer and component analyses also use the same CLEAN304 construction.
 
 Primary outputs:
 

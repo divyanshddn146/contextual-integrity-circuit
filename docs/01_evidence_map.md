@@ -6,7 +6,7 @@ This page maps the current report story directly to the saved code and results.
 |---|---|---|---|
 | How large is the CI behavioral improvement? | Controlled A/B/C/D behavior and eligibility | `scripts/clean304/run_behavior.py`, `scripts/clean304/mine_ci_improvement_cases.py` | `data/final/*eligibility*.csv` |
 | Is recipient/purpose information already usable in Base? | Within-model patching | `scripts/clean304/run_patching.py` | `results/clean304/within_model_patching/` |
-| Are Base and CI representations geometrically aligned? | Raw-state and counterfactual-direction similarity | `scripts/clean304/activation_similarity.py` | `results/clean304/activation_similarity/` |
+| Are Base and CI representations geometrically aligned? | Raw-state and contrast-direction similarity | `scripts/clean304/activation_similarity.py` | `results/clean304/activation_similarity/` |
 | Can internal states be used across checkpoints? | Base-to-CI, CI-to-Base, and same-prompt state transfer | `scripts/clean304/cross_model_patching.py`, `scripts/clean304/same_prompt_cross_model_transfer.py` | `results/clean304/cross_model_transfer/` |
 | Where does privacy information become strongly decision-relevant? | Final D-minus-A direction intervention and signed controls | `scripts/clean304/final_direction_controls.py` | `results/clean304/final_direction_ablation/`, `results/clean304/final_direction_controls/` |
 | Which module is concentrated around the L18 transition? | Residual, attention, and MLP component intervention | `scripts/clean304/component_direction_ablation.py` | `results/clean304/component_direction_ablation/` |

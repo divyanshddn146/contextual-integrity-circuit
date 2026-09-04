@@ -36,6 +36,7 @@ privacylens_l18_heads_to_l22_propagation_with_generation.py
 base_privacylens_direction_remove_rescue.py
 base_privacylens_l18_to_l22_remove_rescue_with_generation.py
 ablate_privacylens_levels_A_baseline.py
+build_same_prompt_correction_analysis.py
 ```
 
 These files are intentionally kept together because several scripts import helper functions from `privacylens_direction_ablation_generation.py`.
